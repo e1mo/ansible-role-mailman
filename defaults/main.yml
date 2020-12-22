@@ -29,7 +29,6 @@ mailman_postfix_setup: false
 mailman_postfix_smtp_port: "smtp"
 
 mailman_nginx_server_name: 'lists.example.org'
-mailman_domain: '{{ mailman_postorius_base_url }}'
 mailman_postorius_base_url: 'http{{ "s" if mailman_nginx_ssl }}://{{ mailman_nginx_server_name }}'
 
 mailman_archiver_key: 'changeme!'
