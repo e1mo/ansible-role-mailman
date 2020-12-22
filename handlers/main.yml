@@ -11,7 +11,7 @@
 
 - name: systemd daemon reload
   systemd:
-    daemon_reload: yes
+    daemon_reload: true
 
 - name: restart mailman
   systemd:

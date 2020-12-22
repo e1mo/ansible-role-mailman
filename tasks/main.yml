@@ -13,7 +13,7 @@
   user:
     name: "{{ mailman_user }}"
     group: "{{ mailman_group }}"
-    create_home: yes
+    create_home: true
     home: "{{ mailman_path }}"
 
 - include_tasks: postfix.yml
@@ -36,8 +36,6 @@
 - include_tasks: config.yml
 
 - name: Symlink logs directory
-  become_user: "{{ mailman_user }}"
-  become: yes
   file:
     src: "{{ mailman_path }}/var/logs"
     dest: '{{ mailman_path }}/logs'
