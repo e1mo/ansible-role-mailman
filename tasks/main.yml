@@ -1,0 +1,52 @@
+---
+- name: Install mailman dependencies
+  apt:
+    name: "{{ mailman_dependencies }}"
+    state: present
+
+- name: Create group
+  group:
+    name: "{{ mailman_group }}"
+    state: present
+
+- name: Create user
+  user:
+    name: "{{ mailman_user }}"
+    group: "{{ mailman_group }}"
+    create_home: yes
+    home: "{{ mailman_path }}"
+
+- include_tasks: postfix.yml
+  when: mailman_postfix_setup
+
+- include_tasks: pip.yml
+
+- name: Create required directories
+  file:
+    state: directory
+    owner: "{{ mailman_user }}"
+    group: "{{ mailman_group }}"
+    path: "{{ mailman_path }}/{{ item }}"
+    mode: '750'
+  with_items:
+    - bin
+    - var
+    - var/logs
+
+- include_tasks: config.yml
+
+- name: Symlink logs directory
+  become_user: "{{ mailman_user }}"
+  become: yes
+  file:
+    src: "{{ mailman_path }}/var/logs"
+    dest: '{{ mailman_path }}/logs'
+    owner: "{{ mailman_user }}"
+    group: "{{ mailman_group }}"
+    state: link
+  notify: mailman-post-update
+
+- include_tasks: systemd.yml
+
+- include_tasks: nginx.yml
+  when: mailman_nginx_enabled

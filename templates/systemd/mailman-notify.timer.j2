@@ -1,0 +1,9 @@
+[Unit]
+Description=Run hourly jobs for django-admin
+
+[Timer]
+OnCalendar=*-*-* 08:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

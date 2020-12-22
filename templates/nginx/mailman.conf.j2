@@ -1,0 +1,30 @@
+{% if mailman_nginx_ssl %}
+server {
+  {% if not mailman_nginx_v6only %}
+  listen 443 ssl http2;
+  {% endif %}
+  listen [::]:443 ssl http2;
+
+  ssl_certificate {{ mailman_nginx_ssl_certificate }};
+  ssl_certificate_key {{ mailman_nginx_ssl_key }};
+
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:MozSSL:10m;
+  ssl_session_tickets off;
+
+  {% include 'templates/nginx/proxy.conf.j2' %}
+}
+{% endif %}
+
+server {
+  {% if not mailman_nginx_v6only %}
+  listen 80;
+  {% endif %}
+  listen [::]:80;
+
+  {% if mailman_nginx_ssl_redirect %}
+  return 301 https://$host$request_uri;
+  {% else %}
+  {% include 'templates/nginx/proxy.conf.j2' %}
+  {% endif %}
+}

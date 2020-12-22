@@ -1,0 +1,67 @@
+---
+- name: Template mailman configuration
+  template:
+    src: 'mailman/{{ item }}.j2'
+    dest: '{{ mailman_path }}/{{ item }}'
+    owner: '{{ mailman_user }}'
+    group: '{{ mailman_group }}'
+    mode: '640'
+  with_items:
+    - init.py
+    - mailman.cfg
+  notify: restart mailman
+- name: Template hyperkitty configuration
+  template:
+    src: "mailman/mailman-hyperkitty.cfg.j2"
+    dest: "{{ mailman_path }}/mailman-hyperkitty.cfg"
+    owner: '{{ mailman_user }}'
+    group: '{{ mailman_group }}'
+    mode: '640'
+  notify:
+    - mailman-post-update
+    - restart qcluster
+- name: Template django configuration
+  template:
+    src: 'mailman/{{ item }}.j2'
+    dest: '{{ mailman_path }}/{{ item }}'
+    owner: '{{ mailman_user }}'
+    group: '{{ mailman_group }}'
+    mode: '640'
+  with_items:
+    - settings_local.py
+    - settings.py
+    - urls.py
+    - wsgi.py
+    - gunicorn.conf
+  notify:
+    - restart gunicorn
+    - mailman-post-update
+- name: Template mailman binary
+  template:
+    src: 'mailman/bin/mailman.j2'
+    dest: '{{ mailman_path }}/bin/mailman'
+    mode: '+x'
+    owner: '{{ mailman_user }}'
+    group: '{{ mailman_group }}'
+  notify: restart mailman
+- name: Template gunicorn binary
+  template:
+    src: 'mailman/bin/gunicorn.j2'
+    dest: '{{ mailman_path }}/bin/gunicorn'
+    mode: '+x'
+    owner: '{{ mailman_user }}'
+    group: '{{ mailman_group }}'
+  notify: restart gunicorn
+- name: Template django related binarys
+  template:
+    src: 'mailman/bin/{{ item }}.j2'
+    dest: '{{ mailman_path }}/bin/{{ item }}'
+    mode: '+x'
+    owner: '{{ mailman_user }}'
+    group: '{{ mailman_group }}'
+  with_items:
+    - django-admin
+    - mailman-post-update
+  notify:
+    - mailman-post-update
+    - restart gunicorn

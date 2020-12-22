@@ -1,0 +1,10 @@
+---
+image: alpine/edge
+secrets:
+  - 079b6b08-e1d8-4497-9a27-7f36fafd0c1a
+tasks:
+  - mirror: |
+      git clone --mirror "https://git.sr.ht/~e1mo/ansible-role-mailman"
+      cd ansible-role-mailman.git
+      git remote add github "git@github.com:e1mo/ansible-role-mailman.git"
+      GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git push --mirror github

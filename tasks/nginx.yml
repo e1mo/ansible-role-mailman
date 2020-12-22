@@ -1,0 +1,9 @@
+---
+- name: Template nginx configuration
+  template:
+    src: nginx/mailman.conf.j2
+    dest: '{{ mailman_nginx_path }}'
+    mode: '644'
+  notify:
+    - test nginx configuration
+    - restart nginx

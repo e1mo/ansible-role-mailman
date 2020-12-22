@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  role_name: mailman
+  author: "Moritz 'e1mo' Fromm"
+  description: Ansible role to install and configure mailman
+
+  issue_tracker_url: https://todo.sr.ht/~e1mo/ansible-role-mailman
+
+  license: GPLv3
+
+  min_ansible_version: 2.1
+
+  platforms:
+    - name: Debian
+      versions:
+        - 10
+        - 09
+    - name: Ubuntu
+        - 20.04
+        - 18.04
+
+  galaxy_tags:
+    - mailman
+    - mail
+    - python
+    - postfix
+    - mailinglists

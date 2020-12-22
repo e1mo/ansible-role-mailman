@@ -1,0 +1,10 @@
+[Unit]
+Description=Run hourly jobs for django-admin
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit={{ mailman_systemd_prefix }}django-admin-runjobs@daily.service
+
+[Install]
+WantedBy=timers.target

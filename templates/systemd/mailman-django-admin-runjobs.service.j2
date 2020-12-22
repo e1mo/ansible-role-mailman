@@ -1,0 +1,6 @@
+[Unit]
+Description=Run django-admin jobs for mailman %I
+
+[Service]
+Type=oneshot
+ExecStart={{ mailman_path }}/bin/django-admin runjobs %i

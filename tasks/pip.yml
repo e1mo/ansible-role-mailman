@@ -1,0 +1,61 @@
+---
+- block:
+    - name: Install/update setuptools and create the virtualenv
+      pip:
+        name:
+          - setuptools
+          - wheel
+        virtualenv: "{{ mailman_venv_path }}"
+        virtualenv_command: "/usr/bin/python3 -m venv"
+        state: latest
+    - name: Install pylibmc pip packages
+      pip:
+        name: pylibmc
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify:
+        - restart qcluster
+        - restart gunicorn
+    - name: Install psycopg2-binary package
+      pip:
+        name: psycopg2-binary
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify:
+        - restart mailman
+        - mailman-post-update
+    - name: Install mailman pip package
+      pip:
+        name:
+          - mailman
+          - mailmanclient
+          - django-mailman3
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify:
+        - restart mailman
+        - mailman-post-update
+    - name: Install postorius and gunicorn pip package
+      pip:
+        name:
+          - postorius
+          - gunicorn
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify:
+        - mailman-post-update
+        - restart gunicorn
+    - name: Install hyperkitty pip packages
+      pip:
+        name:
+          - hyperkitty
+          - mailman-hyperkitty
+          - Whoosh
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify:
+        - restart qcluster
+        - mailman-post-update
+        - restart gunicorn
+  become_user: "{{ mailman_user }}"
+  become: true

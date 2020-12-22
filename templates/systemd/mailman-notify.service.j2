@@ -1,0 +1,8 @@
+[Unit]
+Description=Send periodic digests
+
+[Service]
+User={{ mailman_user }}
+Group={{ mailman_group }}
+Type=oneshot
+ExecStart={{ mailman_path }}/bin/mailman notify

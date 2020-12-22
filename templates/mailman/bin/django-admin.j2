@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. {{ mailman_venv_path }}/bin/activate
+cd {{ mailman_path }}
+export PYTHONPATH={{ mailman_path }}
+export DJANGO_SETTINGS_MODULE=settings
+
+django-admin $@

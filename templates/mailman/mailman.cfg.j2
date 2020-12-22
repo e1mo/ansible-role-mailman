@@ -1,0 +1,50 @@
+[mailman]
+site_owner: {{ mailman_siteowner }}
+layout: here
+
+[paths.here]
+var_dir: {{ mailman_path }}/var
+
+[database]
+{% if mailman_db_type == 'pgsql' %}
+class: mailman.database.postgresql.PostgreSQLDatabase
+url: postgres://{{ mailman_db_user }}:{{ mailman_db_pass }}@{{ mailman_db_host }}/{{ mailman_db_name }}
+{% endif %}
+
+[archiver.hyperkitty]
+class: mailman_hyperkitty.Archiver
+enable: yes
+configuration: {{ mailman_path }}/mailman-hyperkitty.cfg
+
+[shell]
+history_file: $var_dir/history.py
+
+[webservice]
+hostname: {{ mailman_webservice_listen }}
+port: {{ mailman_webservice_port }}
+use_https: {{ mailman_webservice_use_https | ternary('yes', 'no') }}
+show_tracebacks: {{ mailman_webservice_show_tracebacks | ternary('yes', 'no') }}
+admin_user: {{ mailman_webservice_admin_user }}
+admin_pass: {{ mailman_webservice_admin_pass }}
+workers: {{ mailman_webservice_workers }}
+
+[mta]
+incomming: {{ mailman_mta_incomming }}
+outgoing: {{ mailman_mta_outgoing }}
+
+smtp_host: {{ mailman_mta_smtp_host }}
+smtp_port: {{ mailman_mta_smtp_port }}
+smtp_user: {{ mailman_mta_smtp_user }}
+smtp_pass: {{ mailman_mta_smtp_pass }}
+smtp_secure_mode: {{ mailman_mta_smtp_secure_mode }}
+smtp_verify_cert: {{ mailman_mta_smtp_verify_cert | ternary('yes', 'no') }}
+smtp_verify_hostname: {{ mailman_mta_smtp_verify_hostname | ternary('yes', 'no') }}
+
+lmtp_host: {{ mailman_mta_lmtp_host }}
+lmtp_port: {{ mailman_mta_lmtp_port }}
+
+max_recipients: {{ mailman_mta_max_recipients }}
+max_sessions_per_connection: {{ mailman_mta_max_sessions_per_connection }}
+max_delivery_threads: {{ mailman_mta_max_delivery_threads }}
+delivery_retry_period: {{ mailman_mta_delivery_retry_period }}
+max_autoresponses_per_day: {{ mailman_mta_max_autoresponses_per_day }}

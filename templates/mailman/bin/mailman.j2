@@ -1,0 +1,7 @@
+#!/bin/bash
+
+unset PYTHONSTARTUP
+
+exec {{ mailman_venv_path }}/bin/mailman  \
+  -C "{{ mailman_path }}/mailman.cfg"     \
+   $@

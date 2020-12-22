@@ -1,0 +1,15 @@
+[Unit]
+Description=GNU Mailing List Manager
+After=syslog.target network.target postgresql.service
+
+[Service]
+Type=forking
+PIDFile={{ mailman_path }}/var/master.pid
+User={{ mailman_user }}
+Group={{ mailman_group }}
+ExecStart={{ mailman_path }}/bin/mailman start
+ExecReload={{ mailman_path }}/bin/mailman restart
+ExecStop={{ mailman_path }}/bin/mailman stop
+
+[Install]
+WantedBy=multi-user.target

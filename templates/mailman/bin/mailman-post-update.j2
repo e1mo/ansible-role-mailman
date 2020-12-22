@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+BINDIR="{{ mailman_path }}/bin"
+CONFDIR="{{ mailman_path }}"
+SETTINGS="settings"
+DJANGO_CONTROL_SCRIPT="$BINDIR/django-admin"
+STATIC_DIR="$CONFDIR/static"
+DEBUG="False"
+
+set -x
+
+if [ "$DEBUG" == "False" ]; then
+    mkdir -p "$STATIC_DIR" || :
+    "$DJANGO_CONTROL_SCRIPT" collectstatic --clear --noinput --verbosity 0
+    "$DJANGO_CONTROL_SCRIPT" compress
+    "$DJANGO_CONTROL_SCRIPT" compilemessages
+fi
+
+syncdb_cmd="$DJANGO_CONTROL_SCRIPT migrate"
+if [[ ! -t 1 ]]; then
+    # stdout is not a terminal
+    syncdb_cmd="$syncdb_cmd --noinput"
+fi
+$syncdb_cmd
+
+{% if mailman_hyperkitty_serach_index %}
+"$DJANGO_CONTROL_SCRIPT" update_index
+{% endif %}

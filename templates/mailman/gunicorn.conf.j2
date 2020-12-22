@@ -1,0 +1,7 @@
+bind = ['{{ mailman_gunicorn_listen }}:{{ mailman_gunicorn_port }}']
+proc_name = "{{ mailman_gunicorn_procname }}"
+chdir = "{{ mailman_path }}"
+pidfile = "{{ mailman_path }}/var/gunicorn.pid"
+accesslog = "{{ mailman_path }}/var/logs/access.log"
+errorlog = "{{ mailman_path }}/var/logs/error.log"
+workers = {{ mailman_gunicorn_workers }}

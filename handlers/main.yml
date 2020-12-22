@@ -1,0 +1,47 @@
+---
+- name: restart postfix
+  service:
+    name: postfix
+    state: restarted
+
+- name: mailman-post-update
+  become_user: "{{ mailman_user }}"
+  become: true
+  command: "{{ mailman_path }}/bin/mailman-post-update"
+
+- name: systemd daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart mailman
+  systemd:
+    name: "{{ mailman_systemd_prefix }}mailman"
+    state: restarted
+    enabled: true
+
+- name: restart qcluster
+  systemd:
+    name: "{{ mailman_systemd_prefix }}qcluster"
+    state: restarted
+    enabled: true
+
+- name: restart gunicorn
+  systemd:
+    name: "{{ mailman_systemd_prefix }}gunicorn"
+    state: restarted
+    enabled: true
+
+- name: enable all systemd timers
+  systemd:
+    name: "{{ mailman_systemd_prefix }}{{ item }}.timer"
+    state: started
+    enabled: true
+  with_items: "{{ mailman_systemd_timers }}"
+
+- name: test nginx configuration
+  command: nginx -t
+
+- name: restart nginx
+  systemd:
+    name: nginx
+    state: restarted

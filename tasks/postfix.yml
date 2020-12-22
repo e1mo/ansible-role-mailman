@@ -1,0 +1,52 @@
+---
+- name: install postfix
+  apt:
+    name: postfix
+    state: present
+
+- name: set postfix inet_interfaces
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '^inet_interfaces.*'
+    line: 'inet_interfaces = all'
+  notify: restart postfix
+
+- name: set postfix hostname
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '^myhostname.*'
+    line: 'myhostname = {{ ansible_fqdn }}'
+  notify: restart postfix
+
+- name: set postfix destinations
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '^mydestination.*'
+    line: 'mydestination = $myhostname, localhost.$myhostname, localhost'
+  notify: restart postfix
+
+- name: set postfix smtp port
+  lineinfile:
+    path: /etc/postfix/master.cf
+    regexp: '^(?!#).*smtpd$'
+    line: '{{ mailman_postfix_smtp_port }}      inet  n       -       y       -       -       smtpd'
+  notify: restart postfix
+
+- name: set postfix recipient_delimiter
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: '^recipient_delimiter.*'
+    line: 'recipient_delimiter = + '
+  notify: restart postfix
+
+- name: Set postfix transport maps
+  blockinfile:
+    path: /etc/postfix/main.cf
+    block: |
+      transport_maps =
+          hash:{{ mailman_path }}/var/data/postfix_lmtp
+      local_recipient_maps =
+          hash:{{ mailman_path }}/var/data/postfix_lmtp
+      relay_domains =
+          hash:{{ mailman_path }}/var/data/postfix_domains
+  notify: restart postfix

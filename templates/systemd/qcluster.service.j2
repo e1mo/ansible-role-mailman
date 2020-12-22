@@ -1,0 +1,11 @@
+[Unit]
+Description=HyperKitty async tasks runner
+After=network.target remote-fs.target
+
+[Service]
+ExecStart={{ mailman_path }}/bin/django-admin qcluster --pythonpath {{ mailman_path }} --settings settings
+User={{ mailman_user }}
+Group={{ mailman_group }}
+
+[Install]
+WantedBy=multi-user.target

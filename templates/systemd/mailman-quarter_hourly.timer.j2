@@ -1,0 +1,10 @@
+[Unit]
+Description=Run hourly jobs for django-admin
+
+[Timer]
+OnCalendar=*-*-* *:00,15,30,45:00
+Persistent=true
+Unit={{ mailman_systemd_prefix }}django-admin-runjobs@quarter_hourly.service
+
+[Install]
+WantedBy=timers.target

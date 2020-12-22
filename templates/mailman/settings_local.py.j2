@@ -1,0 +1,98 @@
+SECRET_KEY = '{{ mailman_postorius_secret_key }}'
+
+MAILMAN_ARCHIVER_KEY = '{{ mailman_archiver_key }}'
+
+DEBUG = {{ mailman_postorius_debug | ternary('True', 'False') }}
+
+SITE_ID = {{ mailman_postorius_siteid }}
+
+ADMINS = [{% for item in mailman_postorius_admins %}
+  ('{{ item.name }}', '{{ item.email }}'),
+{% endfor %}
+]
+
+ALLOWED_HOSTS = [{% for item in mailman_postorius_allowed_hosts %}
+  '{{ item }}',
+{% endfor %}
+]
+
+MAILMAN_REST_API_URL='http://127.0.0.1:{{ mailman_webservice_port }}'
+MAILMAN_REST_API_USER='{{ mailman_webservice_admin_user }}'
+MAILMAN_REST_API_PASS='{{ mailman_webservice_admin_pass }}'
+MAILMAN_ARCHIVER_FROM = ({%for item in mailman_postorius_archiver_from %}
+  '{{ item }}',
+{% endfor %})
+
+INSTALLED_APPS = (
+    'hyperkitty',
+    'postorius',
+    'django_mailman3',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'django_gravatar',
+    'compressor',
+    'haystack',
+    'django_extensions',
+    'django_q',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+)
+
+DATABASES = {
+   'default': {
+     'ENGINE': 'django.db.backends.{{ mailman_postorius_db_engine }}',
+     'NAME': '{{ mailman_postorius_db_name }}',
+     'USER': '{{ mailman_postorius_db_user }}',
+     'PASSWORD': '{{ mailman_postorius_db_pass }}',
+     'HOST': '{{ mailman_postorius_db_host }}',
+     'PORT': '{{ mailman_postorius_db_port }}',
+   }
+}
+
+CACHES = {
+  'default': {
+    'BACKEND': '{{ mailman_postorius_cache_backend }}',
+    'LOCATION': '{{ mailman_postorius_cache_location }}'
+  }
+}
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_SSL = True
+TIME_ZONE = '{{ mailman_postorius_time_zone }}'
+
+EMAIL_BACKEND = '{{ mailman_postorius_email_backend }}'
+EMAIL_CONFIRMATION_FROM = '{{ mailman_postorius_email_confirmation_from }}'
+DEFAULT_FROM_EMAIL = '{{ mailman_postorius_email_default_from_email }}'
+SERVER_EMAIL = '{{ mailman_postorius_email_server_email }}'
+{% if mailman_postorius_email_host is defined and mailman_postorius_email_host %}
+EMAIL_HOST = '{{ mailman_postorius_email_host }}'
+EMAIL_PORT = {{ mailman_postorius_email_port }}
+EMAIL_USE_SSL = {{ mailman_postorius_email_use_ssl | ternary('True', 'False') }}
+EMAIL_HOST_USER = '{{ mailman_postorius_email_host_user }}'
+EMAIL_HOST_PASSWORD = '{{ mailman_postorius_email_host_pass }}'
+{% endif %}
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+  messages.ERROR: 'danger'
+}
+
+POSTORIUS_TEMPLATE_BASE_URL = '{{ mailman_postorius_base_url }}'
+
+HYPERKITTY_DISABLE_SINGLETON_TASKS = True
+
+COMPRESS_PRECOMPILERS = (
+  ('text/x-scss', 'sass -t compressed {infile} {outfile}'),
+  ('text/x-sass', 'sass -t compressed {infile} {outfile}'),
+)
+COMPRESS_OFFLINE = True
+COMPRESS_ENABLED = True

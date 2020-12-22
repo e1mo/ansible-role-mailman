@@ -1,0 +1,16 @@
+[Unit]
+Description=GNU Mailman web interfaces
+After=syslog.target network.target
+
+[Service]
+PIDFile={{ mailman_path }}/var/gunicorn.pid
+WorkingDirectory={{ mailman_path }}
+ExecStart={{ mailman_path }}/bin/gunicorn -c {{ mailman_path }}/gunicorn.conf wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+User={{ mailman_user }}
+Group={{ mailman_group }}
+
+[Install]
+WantedBy=multi-user.target

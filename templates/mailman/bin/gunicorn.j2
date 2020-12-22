@@ -1,0 +1,14 @@
+#!{{ mailman_venv_path }}/bin/python
+
+import sys
+sys.path[0:0] = [
+  '{{ mailman_path }}/',
+  ]
+
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+import gunicorn.app.wsgiapp
+
+if __name__ == '__main__':
+    sys.exit(gunicorn.app.wsgiapp.run())

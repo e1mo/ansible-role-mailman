@@ -1,0 +1,11 @@
+---
+mailman_systemd_timers:
+  - minutely
+  - quarter_hourly
+  - hourly
+  - daily
+  - weekly
+  - monthly
+  - yearly
+  - digests
+  - notify
