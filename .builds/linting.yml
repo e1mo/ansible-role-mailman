@@ -1,0 +1,14 @@
+---
+image: archlinux
+packages:
+  - yamllint
+  - ansible-lint
+sources:
+  - https://git.sr.ht/~e1mo/ansible-role-mailman
+tasks:
+  - ansiblelint: |
+      cd ansible-role-mailman
+      ansible-lint -p .
+  - yamllint: |
+      cd ansible-role-mailman
+      yamllint -f parsable .
