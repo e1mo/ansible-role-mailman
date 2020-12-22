@@ -52,8 +52,7 @@ mailman_webservice_port: 8001
 mailman_webservice_use_https: false
 mailman_webservice_show_tracebacks: false
 mailman_webservice_admin_user: 'restadmin'
-mailman_rest_pass: 'changeme!'
-mailman_webservice_admin_pass: '{{ mailman_rest_pass }}'
+mailman_webservice_admin_pass: ''
 mailman_webservice_workers: 2
 
 mailman_mta_incomming: 'mailman.mta.postfix.LMTP'
