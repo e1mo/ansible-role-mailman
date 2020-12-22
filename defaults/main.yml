@@ -1,51 +1,17 @@
 ---
-mailman_dependencies:
-  - build-essential
-  - ruby-sass
-  - memcached
-  - python3-dev
-  - python3-wheel
-  - python3-setuptools
-  - python3-virtualenv
-  - memcached
-  - libmemcached-dev
-  - gettext
-
-mailman_hyperkitty_serach_index: false
-
 mailman_user: "mailman"
 mailman_group: "{{ mailman_user }}"
 mailman_path: "/opt/mailman"
 mailman_venv_path: "{{ mailman_path }}/venv"
 mailman_systemd_prefix: 'mailman-'
 
+mailman_siteowner: "user@example.com"
+
 mailman_db_type: "pgsql"  # only pgsql at the moment
 mailman_db_name: "mailman"
 mailman_db_user: "mailman"
 mailman_db_pass: "changeme!"
 mailman_db_host: "localhost"
-
-mailman_postfix_setup: false
-mailman_postfix_smtp_port: "smtp"
-
-mailman_nginx_server_name: 'lists.example.org'
-mailman_postorius_base_url: 'http{{ "s" if mailman_nginx_ssl }}://{{ mailman_nginx_server_name }}'
-
-mailman_archiver_key: 'changeme!'
-mailman_nginx_enabled: false
-mailman_nginx_ssl: true
-mailman_nginx_path: '/etc/nginx/sites-enabled/mailman.conf'
-mailman_nginx_ssl_redirect: true
-mailman_nginx_v6only: false
-mailman_nginx_ssl_certificate: null
-mailman_nginx_ssl_key: null
-
-mailman_gunicorn_listen: '127.0.0.1'
-mailman_gunicorn_port: 8000
-mailman_gunicorn_procname: 'mailman-web'
-mailman_gunicorn_workers: 4
-
-mailman_siteowner: "user@example.com"
 
 mailman_webservice_listen: localhost
 mailman_webservice_port: 8001
@@ -57,6 +23,7 @@ mailman_webservice_workers: 2
 
 mailman_mta_incomming: 'mailman.mta.postfix.LMTP'
 mailman_mta_outgoing: 'mailman.mta.deliver.deliver'
+
 mailman_mta_smtp_host: 'localhost'
 mailman_mta_smtp_port: 25
 mailman_mta_smtp_user: ''
@@ -74,23 +41,10 @@ mailman_mta_max_delivery_threads: 0
 mailman_mta_delivery_retry_period: '5d'
 mailman_mta_max_autoresponses_per_day: 10
 
+mailman_postorius_base_url: 'http{{ "s" if mailman_nginx_ssl }}://{{ mailman_nginx_server_name }}'
 mailman_postorius_secret_key: null
 mailman_postorius_debug: false
 mailman_postorius_siteid: 1
-
-mailman_postorius_admins:
-  - name: Mailman Admin
-    email: mailman@localhost
-
-mailman_postorius_archiver_from:
-  - '127.0.0.1'
-  - '::1'
-  - '::ffff::127.0.0.1'
-
-mailman_postorius_allowed_hosts:
-  - localhost
-  - 127.0.0.1
-  - '{{ mailman_nginx_server_name }}'
 
 mailman_postorius_db_engine: 'postgresql_psycopg2'
 mailman_postorius_db_name: 'postorius'
@@ -98,11 +52,6 @@ mailman_postorius_db_user: 'postorius'
 mailman_postorius_db_pass: 'changeme!'
 mailman_postorius_db_host: '127.0.0.1'
 mailman_postorius_db_port: ''
-
-mailman_postorius_time_zone: '{{ ansible_date_time["tz"] }}'
-
-mailman_postorius_cache_backend: 'django.core.cache.backends.memcached.PyLibMCCache'
-mailman_postorius_cache_location: 'localhost'
 
 mailman_postorius_email_backend: 'django.core.mail.backends.smtp.EmailBackend'
 mailman_postorius_email_host: '{{ mailman_mta_smtp_host }}'
@@ -113,3 +62,57 @@ mailman_postorius_email_default_from_email: '{{ mailman_postorius_email_host_use
 mailman_postorius_email_confirmation_from: '{{ mailman_postorius_email_default_from_email }}'
 mailman_postorius_email_server_email: '{{ mailman_postorius_email_default_from_email }}'
 mailman_postorius_email_use_ssl: true
+
+mailman_postorius_time_zone: '{{ ansible_date_time["tz"] }}'
+
+mailman_postorius_allowed_hosts:
+  - 'localhost'
+  - '127.0.0.1'
+  - '::1'
+  - '::ffff::127.0.0.1'
+  - '{{ mailman_nginx_server_name }}'
+
+mailman_postorius_admins:
+  - name: Mailman Admin
+    email: mailman@localhost
+
+mailman_postorius_archiver_from:
+  - '127.0.0.1'
+  - '::1'
+  - '::ffff::127.0.0.1'
+
+mailman_postorius_cache_backend: 'django.core.cache.backends.memcached.PyLibMCCache'
+mailman_postorius_cache_location: 'localhost'
+
+mailman_gunicorn_listen: '127.0.0.1'
+mailman_gunicorn_port: 8000
+mailman_gunicorn_procname: '{{ mailman_systemd_prefix }}gunicorn'
+mailman_gunicorn_workers: 4
+
+mailman_postfix_setup: false
+mailman_postfix_smtp_port: "smtp"
+
+mailman_nginx_server_name: 'lists.example.org'
+
+mailman_archiver_key: 'changeme!'
+mailman_hyperkitty_serach_index: false
+
+mailman_nginx_enabled: false
+mailman_nginx_ssl: true
+mailman_nginx_path: '/etc/nginx/sites-enabled/mailman.conf'
+mailman_nginx_ssl_redirect: true
+mailman_nginx_v6only: false
+mailman_nginx_ssl_certificate: null
+mailman_nginx_ssl_key: null
+
+mailman_dependencies:
+  - build-essential
+  - ruby-sass
+  - memcached
+  - python3-dev
+  - python3-wheel
+  - python3-setuptools
+  - python3-virtualenv
+  - memcached
+  - libmemcached-dev
+  - gettext
