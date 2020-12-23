@@ -4,6 +4,7 @@ mailman_group: "{{ mailman_user }}"
 mailman_path: "/opt/mailman"
 mailman_venv_path: "{{ mailman_path }}/venv"
 mailman_systemd_prefix: 'mailman-'
+mailman_apt_update: true
 
 mailman_siteowner: "user@example.com"
 

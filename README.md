@@ -41,6 +41,12 @@ mailman_systemd_prefix: 'mailman-'
 Prefix for the installed systemd services and timers (e.g. `mailman-gunicorn.service`, `mailman-notify.timer`)
 
 ```yml
+mailman_apt_update: true
+```
+
+Update the apt-cache while installing mailman dependencies. Especially needed for older docker containers or outdated cloud images.
+
+```yml
 mailman_dependencies:
   - build-essential
   - ruby-sass

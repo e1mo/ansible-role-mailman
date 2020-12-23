@@ -3,6 +3,8 @@
   apt:
     name: "{{ mailman_dependencies }}"
     state: present
+    update_cache: "{{ mailman_apt_update }}"
+    cache_valid_time: 3600
 
 - name: Create group
   group:
