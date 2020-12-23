@@ -6,6 +6,20 @@
     update_cache: "{{ mailman_apt_update }}"
     cache_valid_time: 3600
 
+- name: Install sqlite3
+  apt:
+    name: "sqlite3"
+    state: present
+  notify: restart mailman
+  when: (mailman_db_type != 'pgsql' and mailman_db_type != 'mysql') or
+        mailman_postorius_db_engine == 'sqlite3'
+
+- name: Install default-libmysqlclient-dev
+  apt:
+    name: default-libmysqlclient-dev
+    state: present
+  when: mailman_postorius_db_engine == 'mysql'
+
 - name: Create group
   group:
     name: "{{ mailman_group }}"

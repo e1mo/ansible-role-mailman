@@ -8,6 +8,7 @@
         virtualenv: "{{ mailman_venv_path }}"
         virtualenv_command: "/usr/bin/python3 -m venv"
         state: latest
+
     - name: Install pylibmc pip packages
       pip:
         name: pylibmc
@@ -16,14 +17,37 @@
       notify:
         - restart qcluster
         - restart gunicorn
-    - name: Install psycopg2-binary package
+
+    - name: Install psycopg2-binary
       pip:
         name: psycopg2-binary
         virtualenv: "{{ mailman_venv_path }}"
         state: latest
       notify:
         - restart mailman
+        - restart gunicorn
         - mailman-post-update
+      when: mailman_db_type == 'pgsql' or
+            mailman_postorius_db_engine == 'postgresql_psycopg2'
+
+    - name: Install pymysql pip package for mailman core
+      pip:
+        name: pymysql
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify: restart mailman
+      when: mailman_db_type == 'mysql'
+
+    - name: Install mysqlclient pip package for postorius
+      pip:
+        name: mysqlclient
+        virtualenv: "{{ mailman_venv_path }}"
+        state: latest
+      notify:
+        - mailman-post-update
+        - restart gunicorn
+      when: mailman_postorius_db_engine == 'mysql'
+
     - name: Install mailman pip package
       pip:
         name:
@@ -35,6 +59,7 @@
       notify:
         - restart mailman
         - mailman-post-update
+
     - name: Install postorius and gunicorn pip package
       pip:
         name:
@@ -46,6 +71,7 @@
         - mailman-post-update
         - restart gunicorn
     - name: Install hyperkitty pip packages
+
       pip:
         name:
           - hyperkitty
@@ -57,5 +83,6 @@
         - restart qcluster
         - mailman-post-update
         - restart gunicorn
+
   become_user: "{{ mailman_user }}"
   become: true

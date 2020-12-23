@@ -71,14 +71,14 @@ mailman_siteowner: "user@example.com"
 Address of the site owner, messages that _must_ reach a human are sent this way.
 
 ```yml
-mailman_db_type: "pgsql"  # only pgsql at the moment
-mailman_db_name: "mailman"
-mailman_db_user: "mailman"
-mailman_db_pass: "changeme!"
-mailman_db_host: "localhost"
+mailman_db_type: "sqlite"  # pgsql, mysql, sqlite (fallback for everything)
+mailman_db_name: "mailman.sqlite3"
+mailman_db_user: ""
+mailman_db_pass: ""
+mailman_db_host: ""
 ```
 
-Database credentials for mailman core, support for more database backbends is [on its way](https://mailman.readthedocs.io/en/latest/src/mailman/docs/database.html).
+Database credentials for mailman core. SQLite is the default and fallback. In production, postgresql is recommended for performance reasons.
 
 ```yml
 mailman_webservice_listen: localhost
@@ -152,15 +152,15 @@ mailman_postorius_siteid: 1
 Debug enables stack traces on errors, the site\_id specifies helps with some multi-domain setup and can normally stay 1. This stack-overflow has a good explanation what it's used for: <https://stackoverflow.com/a/25468782>
 
 ```yml
-mailman_postorius_db_engine: 'postgresql_psycopg2'
-mailman_postorius_db_name: 'postorius'
-mailman_postorius_db_user: 'postorius'
-mailman_postorius_db_pass: 'changeme!'
-mailman_postorius_db_host: '127.0.0.1'
+mailman_postorius_db_engine: 'sqlite3'  # mysql, sqlite3 or postgresql_psycopg2
+mailman_postorius_db_name: 'postorius.sqlite3'
+mailman_postorius_db_user: ''
+mailman_postorius_db_pass: ''
+mailman_postorius_db_host: ''
 mailman_postorius_db_port: ''
 ```
 
-Database connectivity for postorius, directly maps to the django settings: <https://docs.djangoproject.com/en/2.2/ref/settings/#std:setting-DATABASES>. Whilst engines other than postgres are theoretically supported, the required pip packages are not installed by this role.
+Database connectivity for postorius, directly maps to the django settings: <https://docs.djangoproject.com/en/2.2/ref/settings/#std:setting-DATABASES>. Postgresql (`postgresql_psycopg2`) is, due to its superior performance, recommended in production. SQLite3 should only be used for testing purposes.
 
 ```yml
 mailman_postorius_email_backend: 'django.core.mail.backends.smtp.EmailBackend'

@@ -8,11 +8,11 @@ mailman_apt_update: true
 
 mailman_siteowner: "user@example.com"
 
-mailman_db_type: "pgsql"  # only pgsql at the moment
-mailman_db_name: "mailman"
-mailman_db_user: "mailman"
-mailman_db_pass: "changeme!"
-mailman_db_host: "localhost"
+mailman_db_type: "sqlite"  # pgsql, mysql, sqlite (fallback for everything)
+mailman_db_name: "mailman.sqlite3"
+mailman_db_user: ""
+mailman_db_pass: ""
+mailman_db_host: ""
 
 mailman_webservice_listen: localhost
 mailman_webservice_port: 8001
@@ -47,11 +47,11 @@ mailman_postorius_secret_key: null
 mailman_postorius_debug: false
 mailman_postorius_siteid: 1
 
-mailman_postorius_db_engine: 'postgresql_psycopg2'
-mailman_postorius_db_name: 'postorius'
-mailman_postorius_db_user: 'postorius'
-mailman_postorius_db_pass: 'changeme!'
-mailman_postorius_db_host: '127.0.0.1'
+mailman_postorius_db_engine: 'sqlite3'  # mysql, sqlite3 or postgresql_psycopg2
+mailman_postorius_db_name: 'postorius.sqlite3'
+mailman_postorius_db_user: ''
+mailman_postorius_db_pass: ''
+mailman_postorius_db_host: ''
 mailman_postorius_db_port: ''
 
 mailman_postorius_email_backend: 'django.core.mail.backends.smtp.EmailBackend'

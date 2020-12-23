@@ -9,6 +9,11 @@ var_dir: {{ mailman_path }}/var
 {% if mailman_db_type == 'pgsql' %}
 class: mailman.database.postgresql.PostgreSQLDatabase
 url: postgres://{{ mailman_db_user }}:{{ mailman_db_pass }}@{{ mailman_db_host }}/{{ mailman_db_name }}
+{% elif mailman_db_type == 'mysql' %}
+class: mailman.database.mysql.MySQLDatabase
+url: mysql+pymysql://{{ mailman_db_user }}:{{ mailman_db_pass }}@{{ mailman_db_host }}/{{ mailman_db_name }}?charset=utf8mb4&use_unicode=1
+{% else %}
+url: sqlite:///{{ mailman_path }}/{{ mailman_db_name }}
 {% endif %}
 
 [archiver.hyperkitty]
