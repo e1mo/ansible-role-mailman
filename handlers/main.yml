@@ -13,9 +13,9 @@
   systemd:
     daemon_reload: true
 
-- name: restart mailman
+- name: restart mailman core
   systemd:
-    name: "{{ mailman_systemd_prefix }}mailman"
+    name: "{{ mailman_systemd_prefix }}core"
     state: restarted
     enabled: true
 

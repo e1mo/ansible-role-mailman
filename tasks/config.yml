@@ -9,7 +9,7 @@
   with_items:
     - init.py
     - mailman.cfg
-  notify: restart mailman
+  notify: restart mailman core
 - name: Template hyperkitty configuration
   template:
     src: "mailman/mailman-hyperkitty.cfg.j2"
@@ -43,7 +43,7 @@
     mode: '+x'
     owner: '{{ mailman_user }}'
     group: '{{ mailman_group }}'
-  notify: restart mailman
+  notify: restart mailman core
 - name: Template gunicorn binary
   template:
     src: 'mailman/bin/gunicorn.j2'

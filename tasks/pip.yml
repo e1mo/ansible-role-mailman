@@ -24,7 +24,7 @@
         virtualenv: "{{ mailman_venv_path }}"
         state: latest
       notify:
-        - restart mailman
+        - restart mailman core
         - restart gunicorn
         - mailman-post-update
       when: mailman_db_type == 'pgsql' or
@@ -35,7 +35,7 @@
         name: pymysql
         virtualenv: "{{ mailman_venv_path }}"
         state: latest
-      notify: restart mailman
+      notify: restart mailman core
       when: mailman_db_type == 'mysql'
 
     - name: Install mysqlclient pip package for postorius
@@ -57,7 +57,7 @@
         virtualenv: "{{ mailman_venv_path }}"
         state: latest
       notify:
-        - restart mailman
+        - restart mailman core
         - mailman-post-update
 
     - name: Install postorius and gunicorn pip package

@@ -10,7 +10,7 @@
   apt:
     name: "sqlite3"
     state: present
-  notify: restart mailman
+  notify: restart mailman core
   when: (mailman_db_type != 'pgsql' and mailman_db_type != 'mysql') or
         mailman_postorius_db_engine == 'sqlite3'
 

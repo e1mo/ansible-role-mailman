@@ -3,14 +3,14 @@
 # over all items, but unfortunately, ansible does not support loops on
 # blocks
 
-- name: Install mailman.service
+- name: Install mailman-core.service
   template:
-    src: "systemd/mailman.service.j2"
-    dest: "/etc/systemd/system/{{ mailman_systemd_prefix }}mailman.service"
+    src: "systemd/mailman-core.service.j2"
+    dest: "/etc/systemd/system/{{ mailman_systemd_prefix }}core.service"
     mode: '644'
   notify:
     - systemd daemon reload
-    - restart mailman
+    - restart mailman core
 
 - name: Install qcluster.service
   template:
