@@ -17,6 +17,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - focal
+        - bionic
 
   galaxy_tags:
     - mailman

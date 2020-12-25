@@ -108,7 +108,7 @@ mailman_nginx_ssl_key: null
 
 mailman_dependencies:
   - build-essential
-  - ruby-sass
+  - sassc
   - memcached
   - python3-dev
   - python3-wheel

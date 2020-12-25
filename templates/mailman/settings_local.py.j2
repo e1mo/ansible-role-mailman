@@ -91,8 +91,8 @@ POSTORIUS_TEMPLATE_BASE_URL = '{{ mailman_postorius_base_url }}'
 HYPERKITTY_DISABLE_SINGLETON_TASKS = True
 
 COMPRESS_PRECOMPILERS = (
-  ('text/x-scss', 'sass -t compressed {infile} {outfile}'),
-  ('text/x-sass', 'sass -t compressed {infile} {outfile}'),
+  ('text/x-scss', 'sassc -t compressed {infile} {outfile}'),
+  ('text/x-sass', 'sassc -t compressed {infile} {outfile}'),
 )
 COMPRESS_OFFLINE = True
 COMPRESS_ENABLED = True
