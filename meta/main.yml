@@ -21,6 +21,7 @@ galaxy_info:
 
   galaxy_tags:
     - mailman
+    - mailman3
     - mail
     - python
     - postfix
