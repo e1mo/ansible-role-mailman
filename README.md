@@ -271,6 +271,7 @@ _Note_: This is really only recommended for testing purposes. Refer to <https://
 
 ```yml
 mailman_nginx_enabled: false
+mailman_nginx_server_name: 'lists.example.org'
 mailman_nginx_ssl: true
 mailman_nginx_path: '/etc/nginx/sites-enabled/mailman.conf'
 mailman_nginx_ssl_redirect: true
@@ -282,6 +283,67 @@ mailman_nginx_ssl_key: null
 Set `mailman_nginx_enabled` to `true` in order to install a nginx configuration to the specified location and restart nginx afterwards.
 
 _Note_: This role will neither install nginx nor generate SSL-Certificates from e.g. letsencrypt for you. That's on you. You can find some roles for that in the [related projects](#related-projects) section.
+
+## Example Playbook
+
+This is a small sample playbook utilizing most of the roles features. To run this playbook you need to have the postgresql database available. The lines ending in `# Change` contain secrets which should be changed in production. Same goes for domain names, E-Mail contacts and so on.
+
+```yml
+- hosts: mailman
+  become: true
+  vars_file:
+    - vars/mailman.yml
+  roles:
+    - e1mo.mailman
+```
+
+_Inside `vars/mailman.yml`_
+
+```yml
+mailman_siteowner: 'postmaster@mydomain.com'
+
+mailman_db_type: 'pgsql'
+mailman_db_name: 'mailman'
+mailman_db_user: 'mailman'
+mailman_db_pass: 'totally_secret'  # Change
+
+mailman_webservice_admin_pass: 'also_secret'  # Change
+
+mailman_mta_smtp_port: 465
+mailman_mta_smtp_user: 'mailman@mydomain.com'
+mailman_mta_smtp_pass: '1337secret42'  # Change
+mailman_mta_smtp_secure_mode: 'smtps'
+
+mailman_postorius_secret_key: 'fooSecretBar'  # Change
+
+mailman_postorius_db_engine: 'postgresql_psycopg2'
+mailman_postorius_db_name: 'mailman_postorius'
+mailman_postorius_db_user: 'mailman_postorius'
+mailman_postorius_db_pass: 'no-less-secret'  # Change
+mailman_postorius_db_host: 'localhost'
+
+mailman_postorius_email_default_from_email: 'noreply@lists.mydomain.com'
+
+mailman_postorius_time_zone: 'Europe/Berlin'
+
+mailman_postorius_admins:
+  - name: Fellow Hacker
+    email: noc@hacker.org
+
+mailman_archiver_key: 'not-leaking-that-one'  # Change
+
+# This is **no especially secure** postfix setup.
+# Running your own, properly configured, Mailserver is highly advised.
+mailman_postfix_setup: true
+
+# You need to have nginx installed before hand
+mailman_nginx_enabled: true
+mailman_nginx_path: '/etc/nginc/sites-enabled/lists.mydomain.com.conf'
+mailman_nginx_server_name: 'lists.mydomain.com'
+
+mailman_nginx_ssl_certificate: '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+mailman_nginx_ssl_key: '/etc/ssl/private/ssl-cert-snakeoil.key'
+```
 
 ## License
 

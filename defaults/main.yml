@@ -93,12 +93,11 @@ mailman_gunicorn_workers: 4
 mailman_postfix_setup: false
 mailman_postfix_smtp_port: "smtp"
 
-mailman_nginx_server_name: 'lists.example.org'
-
 mailman_archiver_key: 'changeme!'
 mailman_hyperkitty_serach_index: false
 
 mailman_nginx_enabled: false
+mailman_nginx_server_name: 'lists.example.org'
 mailman_nginx_ssl: true
 mailman_nginx_path: '/etc/nginx/sites-enabled/mailman.conf'
 mailman_nginx_ssl_redirect: true
