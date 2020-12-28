@@ -49,7 +49,7 @@ Update the apt-cache while installing mailman dependencies. Especially needed fo
 ```yml
 mailman_dependencies:
   - build-essential
-  - ruby-sass
+  - sassc
   - memcached
   - python3-dev
   - python3-wheel
