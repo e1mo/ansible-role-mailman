@@ -240,6 +240,12 @@ mailman_archiver_key: 'changeme!'
 Shared secret between hyperkitty and mailman for authentication. _Must_ be set.
 
 ```yml
+mailman_hyperkitty_base_url: '{{ mailman_postorius_base_url }}'
+```
+
+Base URL for the hyperkitty installation. Normally, there is no need to change it. But in setups with external reverse proxy it may be necessary to change it to something like `127.0.0.1:{{ mailman_gunicorn_port }}`.
+
+```yml
 mailman_hyperkitty_serach_index: false
 ```
 
