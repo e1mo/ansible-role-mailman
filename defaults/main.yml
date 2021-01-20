@@ -104,7 +104,7 @@ mailman_nginx_enabled: false
 mailman_nginx_server_name: 'lists.example.org'
 mailman_nginx_ssl: true
 mailman_nginx_path: '/etc/nginx/sites-enabled/mailman.conf'
-mailman_nginx_ssl_redirect: true
+mailman_nginx_ssl_redirect: '{{ mailman_nginx_ssl }}'
 mailman_nginx_v6only: false
 mailman_nginx_ssl_certificate: null
 mailman_nginx_ssl_key: null
