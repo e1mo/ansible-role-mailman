@@ -71,6 +71,12 @@ mailman_siteowner: "user@example.com"
 Address of the site owner, messages that _must_ reach a human are sent this way.
 
 ```yml
+mailman_default_language: 'en'
+```
+Default language for created mailinglists
+
+
+```yml
 mailman_db_type: "sqlite"  # pgsql, mysql, sqlite (fallback for everything)
 mailman_db_name: "mailman.sqlite3"
 mailman_db_user: ""
@@ -137,6 +143,12 @@ mailman_postorius_base_url: 'http{{ "s" if mailman_nginx_ssl }}://{{ mailman_ngi
 ```
 
 The public URL to use in Templates and so on. Defaults to the nginx-configured values to save some typing but can be overwritten.
+
+```yml
+mailman_postorius_language_code: 'en-us'
+```
+
+Default language of the postorius fronted. Mapped to the `LANGUAGE_CODE` setting in Django. See [here](https://docs.djangoproject.com/en/2.2/ref/settings/#language-code) for more information.
 
 ```yml
 mailman_postorius_secret_key: null
