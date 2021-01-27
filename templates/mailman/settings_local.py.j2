@@ -5,6 +5,7 @@ MAILMAN_ARCHIVER_KEY = '{{ mailman_archiver_key }}'
 DEBUG = {{ mailman_postorius_debug | ternary('True', 'False') }}
 
 SITE_ID = {{ mailman_postorius_siteid }}
+FILTER_VHOST = True
 
 ADMINS = [{% for item in mailman_postorius_admins %}
   ('{{ item.name }}', '{{ item.email }}'),
